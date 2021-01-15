@@ -130,4 +130,7 @@ dmypy.json
 
 .dist/
 /*/node_modules/
-./api/
+api/
+
+./backend/app.py
+./clean_and_insert.py
