@@ -132,5 +132,5 @@ dmypy.json
 /*/node_modules/
 api/
 
-./backend/app.py
-./clean_and_insert.py
+backend/app.py
+clean_and_insert.py
