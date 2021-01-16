@@ -1,6 +1,7 @@
 # crypto-currency-analysis
 
 ## demo
+- ![](./docs/screen01.jpg)
 - [video](https://youtu.be/ycg9G2Yi_Jc)
 
 ## requirements
