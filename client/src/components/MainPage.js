@@ -34,7 +34,7 @@ export default class MainPage extends React.Component {
                         defaultValue={new Date(this.state.today)} 
             />
           </div>
-          <div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
             <MyTable today={this.state.today} />
           </div>
         </div>

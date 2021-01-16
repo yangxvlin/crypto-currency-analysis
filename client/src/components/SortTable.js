@@ -42,10 +42,25 @@ export default class SortTable extends React.Component {
         if (typeof y === 'string') {
           y = y.charCodeAt();
         }
-        if (sortType === 'asc') {
-          return x - y;
-        } else {
-          return y - x;
+
+        // equal items sort equally
+        if (x === y) {
+          return 0;
+        }
+        // nulls sort after anything else
+        else if (x === null) {
+            return 1;
+        }
+        else if (y === null) {
+            return -1;
+        }
+        // otherwise, if we're ascending, lowest sorts first
+        else if (sortType === 'asc') {
+            return x < y ? -1 : 1;
+        }
+        // if descending, highest sorts first
+        else { 
+            return x < y ? 1 : -1;
         }
       });
     }
@@ -67,11 +82,33 @@ export default class SortTable extends React.Component {
     }, 500);
   }
 
+  my_format_float(num) {
+    if (num != null) {
+      return "$" + num.toFixed(2).toLocaleString();
+    } else {
+      return "null";
+    }
+  }
+
+  my_to_percent(num) {
+    if (num != null) {
+      var val = Number(num*100).toFixed(2) + "%";
+      if (num > 0) {
+        return <p style={{ color: 'red' }} >{val}</p>;
+      } else {
+        return <p style={{ color: 'green' }} >{val}</p>;
+      }
+    } else {
+      return "null";
+    }
+  }
+
   render() {
     return (
       <div>
         <Table
           height={600}
+          width={910}
           data={this.getData()}
           sortColumn={this.state.sortColumn}
           sortType={this.state.sortType}
@@ -84,34 +121,34 @@ export default class SortTable extends React.Component {
             <Cell dataKey="Coin" />
           </Column>
 
-          <Column width={130} sortable>
+          <Column width={130} sortable align="right">
             <HeaderCell>Price</HeaderCell>
-            <Cell dataKey="Price" />
+            <Cell dataKey="Price" >{rowData => this.my_format_float(rowData.Price)}</Cell>
           </Column>
 
-          <Column width={130} sortable>
+          <Column width={130} sortable align="right">
             <HeaderCell>24h</HeaderCell>
-            <Cell dataKey="24h" />
+            <Cell dataKey="24h" >{rowData => this.my_to_percent(rowData["24h"])}</Cell>
           </Column>
 
-          <Column width={130} sortable>
+          <Column width={100} sortable align="right">
             <HeaderCell>7d</HeaderCell>
-            <Cell dataKey="7d" />
+            <Cell dataKey="7d" >{rowData => this.my_to_percent(rowData["7d"])}</Cell>
           </Column>
 
-          <Column width={130} sortable>
+          <Column width={100} sortable align="right">
             <HeaderCell>1m</HeaderCell>
-            <Cell dataKey="1m" />
+            <Cell dataKey="1m" >{rowData => this.my_to_percent(rowData["1m"])}</Cell>
           </Column>
 
-          <Column width={130} sortable>
+          <Column width={160} sortable align="right">
             <HeaderCell>24h Volume</HeaderCell>
-            <Cell dataKey="24h_volume" />
+            <Cell dataKey="24h_volume" >{rowData => this.my_format_float(rowData["24h_volume"])}</Cell>
           </Column>
 
-          <Column width={130} sortable>
+          <Column width={160} sortable align="right">
             <HeaderCell>Market Capital</HeaderCell>
-            <Cell dataKey="Market_Cap" />
+            <Cell dataKey="Market_Cap" >{rowData => this.my_format_float(rowData.Market_Cap)}</Cell>
           </Column>
 
         </Table>
