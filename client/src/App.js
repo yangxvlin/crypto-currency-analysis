@@ -16,17 +16,10 @@ import MainPage from "./components/MainPage";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.handleSelect = this.handleSelect.bind(this);
     this.navItemOnClick = this.navItemOnClick.bind(this);
     this.state = {
       activeKey: 1,
     };
-  }
-  
-  handleSelect(eventKey) {
-    this.setState({
-      activeKey: eventKey
-    });
   }
 
   navItemOnClick(index) {
@@ -42,19 +35,19 @@ class App extends Component {
       <Container>
 
         <Navbar appearance="inverse">
-          <Navbar.Header>
+          <Navbar.Header onClick={ () => {this.navItemOnClick(1)} }>
             <a href="#" className="navbar-brand logo">
-              RSUITE
+              Crypto Currency Analysis
             </a>
           </Navbar.Header>
           <Navbar.Body>
-            <Nav onSelect={this.handleSelect} activeKey={activeKey}>
-              <Nav.Item eventKey="1" icon={<Icon icon="home" />} onClick={ () => {this.navItemOnClick(1)} } >
+            <Nav>
+              <Nav.Item icon={<Icon icon="home" />} onClick={ () => {this.navItemOnClick(1)} } >
                 Home
               </Nav.Item>
               <Dropdown title="About">
-                <Dropdown.Item eventKey="5" onClick={ () => {this.navItemOnClick(5)} } >Team</Dropdown.Item>
-                <Dropdown.Item eventKey="6" onClick={ () => {this.navItemOnClick(6)} } >Contact</Dropdown.Item>
+                <Dropdown.Item onClick={ () => {this.navItemOnClick(5)} } >Team</Dropdown.Item>
+                <Dropdown.Item onClick={ () => {this.navItemOnClick(6)} } >Contact</Dropdown.Item>
               </Dropdown>
             </Nav>
             <Nav pullRight>
@@ -65,6 +58,7 @@ class App extends Component {
         
         <Container>
           <Content>
+            { console.log("this.state.activeKey", this.state.activeKey) }
             {this.state.activeKey === 5 ? (
               console.log(this.state.activeKey),
               <TeamPage />

@@ -82,14 +82,16 @@ export default class SortTable extends React.Component {
     }, 500);
   }
 
-  my_format_float(num) {
+  // convert digit 123456789 to $123,456,789.00
+  my_format_float(num, digits) {
     if (num != null) {
-      return "$" + num.toFixed(2).toLocaleString();
+      return "$" + num.toLocaleString('en-US', {minimumFractionDigits: digits});
     } else {
       return "null";
     }
   }
 
+  // convert digit 0.5050 to 50.50%
   my_to_percent(num) {
     if (num != null) {
       var val = Number(num*100).toFixed(2) + "%";
@@ -123,7 +125,7 @@ export default class SortTable extends React.Component {
 
           <Column width={130} sortable align="right">
             <HeaderCell>Price</HeaderCell>
-            <Cell dataKey="Price" >{rowData => this.my_format_float(rowData.Price)}</Cell>
+            <Cell dataKey="Price" >{rowData => this.my_format_float(rowData.Price, 2)}</Cell>
           </Column>
 
           <Column width={130} sortable align="right">
@@ -143,12 +145,12 @@ export default class SortTable extends React.Component {
 
           <Column width={160} sortable align="right">
             <HeaderCell>24h Volume</HeaderCell>
-            <Cell dataKey="24h_volume" >{rowData => this.my_format_float(rowData["24h_volume"])}</Cell>
+            <Cell dataKey="24h_volume" >{rowData => this.my_format_float(rowData["24h_volume"], 0)}</Cell>
           </Column>
 
           <Column width={160} sortable align="right">
             <HeaderCell>Market Capital</HeaderCell>
-            <Cell dataKey="Market_Cap" >{rowData => this.my_format_float(rowData.Market_Cap)}</Cell>
+            <Cell dataKey="Market_Cap" >{rowData => this.my_format_float(rowData.Market_Cap, 0)}</Cell>
           </Column>
 
         </Table>
