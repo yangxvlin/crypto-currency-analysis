@@ -1,15 +1,24 @@
 from flask import Flask
 app = Flask(__name__)
+from flask_cors import CORS, cross_origin
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 from flaskext.mysql import MySQL
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = 'root'
+
+app.config['MYSQL_DATABASE_DB'] = 'crypto_currency'
 
 mysql = MySQL()
 mysql.init_app(app)
 
-from flask import jsonify
+from flask import request, jsonify
 
 @app.route('/test', methods=['GET', 'POST'])
 def index():
+    today_param = request.args.get('today')
+
     cur = mysql.connect().cursor()
 
     query = """select TODAY.Currency as 'Coin', 
@@ -17,7 +26,7 @@ def index():
                 (TODAY.close - Today.open) / Today.open as '24h',
                 (LAST_WEEK.close - Today.close) / Today.close as '7d',
                 (LAST_MONTH.close - Today.close) / Today.close as '1m',
-                TODAY.Volume - YESTERDAY.Volume as '24h_volume', 
+                TODAY.Volume as '24h_volume', 
                 TODAY.Market_Cap from
             (select today.Currency, today.Volume, today.Market_Cap, today.close, today.open from main today
                 where Date = DATE(\"{}\") ) as TODAY
@@ -32,21 +41,24 @@ def index():
             LEFT JOIN 
             (select last_month.Currency, last_month.close from main last_month
                         where Date = DATE(\"{}\") - INTERVAL 30 DAY) as LAST_MONTH
-            on LAST_MONTH.Currency = TODAY.Currency;""".format("2019-11-01", "2019-11-01", "2019-11-01", "2019-11-01")
+            on LAST_MONTH.Currency = TODAY.Currency;""".format(today_param, today_param, today_param, today_param)
     cur.execute(query)
     result = cur.fetchall()
+    cur.close()
 
-    rresult = {}
+    rresult = []
 
     for row in result:
-        for i, item in enumerate(row):
-            if i == 0:
-                rresult[item] = {}
-            elif
+        rresult.append({"Coin":       row[0],
+                        "Price":      row[1],
+                        "24h":        row[2],
+                        "7d":         row[3],
+                        "1m":         row[4],
+                        "24h_volume": row[5], 
+                        "Market_Cap": row[6],
+        })
 
-    print(result)
-    cur.close()
-    return jsonify(result)
+    return jsonify(rresult), 200
 
 if __name__ == '__main__':
     app.run()

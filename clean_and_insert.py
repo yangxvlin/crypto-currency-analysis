@@ -3,6 +3,12 @@ import csv
 import datetime
 import mysql.connector
 
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+
+  database="crypto_currency"
+)
 
 mycursor = mydb.cursor()
 

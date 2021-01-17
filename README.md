@@ -1,5 +1,18 @@
 # crypto-currency-analysis
 
+## directory
+    .
+    ├── backend/                # flask backend application
+    │   ├── app.py              # entry of application
+    ├── client/                 # react.js frontend application
+    │   ├── App.js              # entry of application
+    │   ├── components          # implemented react components
+    ├── docs/                   # related documentation
+    ├── clean_and_insert.py     # insert data from csv to mysql database
+    ├── database.sql            # mysql table create query
+    |
+    └── ...
+
 ## demo
 - ![](./docs/screen01.jpg)
 - [video](https://youtu.be/ycg9G2Yi_Jc)
@@ -39,3 +52,8 @@
     - if mixed workload, read-through + write-back
   - [reference 1](https://codeahoy.com/2017/08/11/caching-strategies-and-how-to-choose-the-right-one/)
   - [reference 2](https://bluzelle.com/blog/things-you-should-know-about-database-caching)
+- ``` Incorporating AWS skills in the solution and using docker to containerize the whole solution will be highly favored ```
+  - idea: 
+    1. DOCKERFILE for frontend & backend
+    2. using docker-compose to scale applications
+    3. write ansible playbook to deploy dockerised applications
